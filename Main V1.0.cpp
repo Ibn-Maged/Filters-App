@@ -10,6 +10,11 @@ void filter3();
 void filter4();
 void filter5();
 void filter6();
+void load_image();
+void save_image();
+
+unsigned char image_grid[SIZE][SIZE];
+
 
 int main()
 {
@@ -53,25 +58,44 @@ int main()
 
 void filter1()
 {
-    cout << "fliter 1 test";
+    cout << "filter 1 test";
 }
 void filter2()
 {
-    cout << "fliter 2 test";
+    cout << "filter 2 test";
 }
 void filter3()
 {
-    cout << "fliter 3 test";
+    cout << "filter 3 test";
 }
 void filter4()
 {
-    cout << "fliter 4 test";
+    cout << "filter 4 test";
 }
 void filter5()
 {
-    cout << "fliter 5 test";
+    cout << "filter 5 test";
 }
 void filter6()
 {
-    cout << "fliter 6 test";
+    cout << "filter 6 test";
+}
+
+
+void load_image()
+{
+    char image_name[50];
+    cout << "Please Enter Image Name: ";
+    cin >> image_name;
+    strcat(image_name , ".bmp");
+    readGSBMP(image_name , image_grid);
+}
+
+void save_image()
+{
+    char new_name[50];
+    cout << "Please Enter a New Name: ";
+    cin >> new_name;
+    strcat(new_name , ".bmp");
+    writeGSBMP(new_name , image_grid );
 }
