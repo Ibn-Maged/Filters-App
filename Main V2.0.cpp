@@ -11,7 +11,7 @@ void rotate();
 void BWimage ();
 void merge_images();
 void flipimageH ();
-void chose();
+void choose();
 void flipimageV ();
 void load_image();
 void save_image();
@@ -29,10 +29,15 @@ int main()
 {
     int choice;
     cout << "Hello Dear User!\n" << "what Do You Need Today?\n";
-    cout << "1- Black and White \n" << "2- invert \n" << "3- merge\n" << "4- flip\n" << "5-rotate \n" << "6- Darken and Lighten" << endl;
-    cin >> choice;
-    cin.clear();
-    cin.sync();
+    do 
+    {
+        cout << "1- Black and White \n" << "2- invert \n" << "3- merge\n" << "4- flip\n" << "5-rotate \n" << "6- Darken and Lighten" << endl;
+        cin >> choice;
+        cin.clear();
+        cin.sync();
+    }while (choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 5 && choice != 6);
+
+    load_image();
 
     if (choice == 1)
     {
@@ -51,7 +56,7 @@ int main()
 
     else if (choice == 4)
     {
-        chose();
+        choose();
     }
 
     else if (choice == 5)
@@ -63,6 +68,9 @@ int main()
     {
         darken_ligthen();
     }
+
+    save_image();
+
 }
 
 void invert()
@@ -71,19 +79,22 @@ void invert()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            image_grid[i][j] = 255 - image_grid[i][j];
+            image_grid[i][j] = 255 - image_grid[i][j];       // subtract from 255 to get the negative value for the color
         }
     }
 }
 void rotate()
 {
     int choice;
-    cout << "Do You Want Rotate by 90 or 180 or 270? ";
-    cin >> choice;
-
+    do 
+    {
+        cout << "Do You Want Rotate by 90 or 180 or 270? ";
+        cin >> choice;
+    } while (choice != 90 && choice != 180 && choice != 270   ) ;
+    
     if (choice == 90)
     {
-        for (int i =0; i < SIZE - 1; i++)           // copy from the image grid to a new grid
+        for (int i =0; i < SIZE - 1; i++)           // to rotate into a new grid
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -91,7 +102,7 @@ void rotate()
             }
         }
 
-        for (int i = 0; i < SIZE - 1; i++)         // returning the new grid to the old one
+        for (int i = 0; i < SIZE - 1; i++)         // return the image to the original grid
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -102,7 +113,7 @@ void rotate()
     }
     else if (choice == 180)
     {
-        for (int i = 0; i < (SIZE/2)-1; i++)
+        for (int i = 0; i < (SIZE/2)-1; i++)        // to (SIZE / 2) to prevent Swaping An Already Swapped Pixel 
         {
             for (int j = 0; j < SIZE-1 ; j++)
             {
@@ -112,7 +123,7 @@ void rotate()
     }
     else if (choice == 270)
     {
-        for (int i = 0; i < SIZE - 1; i++)
+        for (int i = 0; i < SIZE - 1; i++)         // to rotate into a new grid 
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -120,7 +131,7 @@ void rotate()
             }
         }
 
-        for (int i = 0; i < SIZE - 1; i++)
+        for (int i = 0; i < SIZE - 1; i++)         // to return the image to the original grid
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -191,7 +202,7 @@ void flipimageV(){
 
 }
 
-void chose(){
+void choose(){
   int type;
 
   while (true)
