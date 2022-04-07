@@ -1,0 +1,12 @@
+lighten algorithm
+load picture 
+loop throught every pixel in picture
+add 256 to pixel color and dvide by two 
+input new picture name 
+save picture
+darken algorithm
+load picture 
+loop throught every pixel in picture
+dvide pixel color by two 
+input new picture name 
+save picture
