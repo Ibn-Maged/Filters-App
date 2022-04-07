@@ -1,0 +1,7 @@
+load picture
+load another picture to merge it with the first one
+loop throught the pixel array
+add colors of same pixel of the two pictures and dvide by 2
+iniialize the pixel color by the new color
+input name of new picture
+save picture
