@@ -18,6 +18,12 @@ void save_image();
 void darken_ligthen();
 void darken();
 void ligthen();
+void shrink_image();
+void blur_image();
+//void detect_image_edges();
+//void enlarge_image();
+//void mirror_image();
+//void shuffle_image();
 
 unsigned char image_grid[SIZE][SIZE];
 unsigned char new_image_grid[SIZE][SIZE];
@@ -29,13 +35,13 @@ int main()
 {
     int choice;
     cout << "Hello Dear User!\n" << "what Do You Need Today?\n";
-    do 
+    do
     {
-        cout << "1- Black and White \n" << "2- invert \n" << "3- merge\n" << "4- flip\n" << "5-rotate \n" << "6- Darken and Lighten" << endl;
+        cout << "1- Black and White \n" << "2- invert \n" << "3- merge\n" << "4- flip\n" << "5-rotate \n" << "6- Darken and Lighten \n"<<"7- Detect Image Edges \n"<<"8- Enlarge Image \n"<<"9- Shrink Image \n"<<"a- Mirror Image \n" <<"b- Shuffle Image \n" <<"c- Blur Image" << endl;
         cin >> choice;
         cin.clear();
         cin.sync();
-    }while (choice != 1 && choice != 2 && choice != 3 && choice != 4 && choice != 5 && choice != 6);
+    }while (choice>9||choice<1);
 
     load_image();
 
@@ -68,6 +74,31 @@ int main()
     {
         darken_ligthen();
     }
+    else if (choice == 7)
+    {
+        //detect_image_edges();
+    }
+    else if (choice == 8)
+    {
+       // enlarge_image();
+    }
+    else if (choice == 9)
+    {
+        shrink_image();
+    }
+    else if (choice == 'a')
+    {
+        //mirror_image();
+    }
+    else if (choice == 'b')
+    {
+        //shuffle_image();
+    }
+    else if (choice == 'c')
+    {
+        blur_image();
+    }
+
 
     save_image();
 
@@ -86,12 +117,12 @@ void invert()
 void rotate()
 {
     int choice;
-    do 
+    do
     {
         cout << "Do You Want Rotate by 90 or 180 or 270? ";
         cin >> choice;
     } while (choice != 90 && choice != 180 && choice != 270   ) ;
-    
+
     if (choice == 90)
     {
         for (int i =0; i < SIZE - 1; i++)           // to rotate into a new grid
@@ -113,7 +144,7 @@ void rotate()
     }
     else if (choice == 180)
     {
-        for (int i = 0; i < (SIZE/2)-1; i++)        // to (SIZE / 2) to prevent Swaping An Already Swapped Pixel 
+        for (int i = 0; i < (SIZE/2)-1; i++)        // to (SIZE / 2) to prevent Swaping An Already Swapped Pixel
         {
             for (int j = 0; j < SIZE-1 ; j++)
             {
@@ -123,7 +154,7 @@ void rotate()
     }
     else if (choice == 270)
     {
-        for (int i = 0; i < SIZE - 1; i++)         // to rotate into a new grid 
+        for (int i = 0; i < SIZE - 1; i++)         // to rotate into a new grid
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -271,6 +302,7 @@ void ligthen(){
     }
 }
 void darken(){
+
     //make the photo darker
     for(int i=0;i<256;i++){
         for(int j=0;j<256;j++){
@@ -278,6 +310,49 @@ void darken(){
         }
     }
 }
+void shrink_image() {
+    string shrink_size;
+    cout<<"Shrink to (1/2), (1/3) or (1/4)?"<<endl;
+    cin>>shrink_size;
+
+    if(shrink_size=="1/2"){
+        for(int i=0;i<256;i+=2){
+            for(int j=0;j<256;j+=2){
+                new_image_grid[i/2][j/2]=image_grid[i][j];
+            }
+        }
+    }
+    else if(shrink_size=="1/3"){
+        for(int i=0;i<256;i+=3){
+            for(int j=0;j<256;j+=3){
+                new_image_grid[i/3][j/3]=image_grid[i][j];
+            }
+        }
+    }
+    else{
+        for(int i=0;i<256;i+=4){
+            for(int j=0;j<256;j+=4){
+                new_image_grid[i/4][j/4]=image_grid[i][j];
+            }
+        }
+    }
+    for(int i=0;i<256;i++){
+        for(int j=0;j<256;j++){
+            image_grid[i][j]=new_image_grid[i][j];
+        }
+    }
+}
+
+void blur_image() {
+    char color;
+    for(int j=1;j<255;j++){
+        for(int i=1;i<255;i++){
+            image_grid[i][j]=(image_grid[i-1][j-1]+image_grid[i-1][j]+image_grid[i-1][j+1]+image_grid[i][j-1]+image_grid[i][j+1]+image_grid[i+1][j-1]+image_grid[i+1][j]+image_grid[i+1][j+1])/8;
+        }
+    }
+}
+
+
 
 void load_image(){
     char image_name[50];
