@@ -33,6 +33,7 @@ unsigned char newimage[SIZE][SIZE];
 
 int main()
 {
+    load_image();
     int choice;
     cout << "Hello Dear User!\n" << "what Do You Need Today?\n";
     do
@@ -43,7 +44,7 @@ int main()
         cin.sync();
     }while (choice>9||choice<1);
 
-    load_image();
+
 
     if (choice == 1)
     {
