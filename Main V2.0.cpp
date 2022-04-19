@@ -32,78 +32,79 @@ unsigned char newimage[SIZE][SIZE];
 
 
 int main()
-{
-    load_image();
-    int choice;
-    cout << "Hello Dear User!\n" << "what Do You Need Today?\n";
-    do
     {
-        cout << "1- Black and White \n" << "2- invert \n" << "3- merge\n" << "4- flip\n" << "5-rotate \n" << "6- Darken and Lighten \n"<<"7- Detect Image Edges \n"<<"8- Enlarge Image \n"<<"9- Shrink Image \n"<<"a- Mirror Image \n" <<"b- Shuffle Image \n" <<"c- Blur Image" << endl;
-        cin >> choice;
-        cin.clear();
-        cin.sync();
-    }while (choice>9||choice<1);
+        while(true){
+        load_image();
+        int choice;
+        cout << "Hello Dear User!\n" << "what Do You Need Today?\n";
+        do
+        {
+            cout << "1- Black and White \n" << "2- invert \n" << "3- merge\n" << "4- flip\n" << "5-rotate \n" << "6- Darken and Lighten \n"<<"7- Detect Image Edges \n"<<"8- Enlarge Image \n"<<"9- Shrink Image \n"<<"a- Mirror Image \n" <<"b- Shuffle Image \n" <<"c- Blur Image" << endl;
+            cin >> choice;
+            cin.clear();
+            cin.sync();
+        }while (choice>9||choice<1);
 
 
 
-    if (choice == 1)
-    {
-        BWimage();
-    }
+        if (choice == 1)
+        {
+            BWimage();
+        }
 
-    else if (choice == 2)
-    {
-        invert();
-    }
+        else if (choice == 2)
+        {
+            invert();
+        }
 
-    else if (choice == 3)
-    {
-        merge_images();
-    }
+        else if (choice == 3)
+        {
+            merge_images();
+        }
 
-    else if (choice == 4)
-    {
-        choose();
-    }
+        else if (choice == 4)
+        {
+            choose();
+        }
 
-    else if (choice == 5)
-    {
-        rotate();
-    }
+        else if (choice == 5)
+        {
+            rotate();
+        }
 
-    else if (choice == 6)
-    {
-        darken_ligthen();
-    }
-    else if (choice == 7)
-    {
-        //detect_image_edges();
-    }
-    else if (choice == 8)
-    {
-       // enlarge_image();
-    }
-    else if (choice == 9)
-    {
-        shrink_image();
-    }
-    else if (choice == 'a')
-    {
-        //mirror_image();
-    }
-    else if (choice == 'b')
-    {
-        //shuffle_image();
-    }
-    else if (choice == 'c')
-    {
-        blur_image();
-    }
+        else if (choice == 6)
+        {
+            darken_ligthen();
+        }
+        else if (choice == 7)
+        {
+            //detect_image_edges();
+        }
+        else if (choice == 8)
+        {
+           // enlarge_image();
+        }
+        else if (choice == 9)
+        {
+            shrink_image();
+        }
+        else if (choice == 'a')
+        {
+            //mirror_image();
+        }
+        else if (choice == 'b')
+        {
+            //shuffle_image();
+        }
+        else if (choice == 'c')
+        {
+            blur_image();
+        }
 
 
-    save_image();
+        save_image();
 
-}
+}}
 
 void invert()
 {
