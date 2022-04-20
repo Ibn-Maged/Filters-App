@@ -2,6 +2,7 @@
 #include <cstring>
 #include "bmplib.h"
 #include "bmplib.cpp"
+#include<cmath>
 
 using namespace std;
 
@@ -20,12 +21,18 @@ void darken();
 void ligthen();
 void shrink_image();
 void blur_image();
-//void detect_image_edges();
+void Detectimage ();
 //void enlarge_image();
-//void mirror_image();
+void down_side ();
+void right_side ();
+void upper_side();
+void left_side();
+void Mirrorimage();
 //void shuffle_image();
 
 unsigned char image_grid[SIZE][SIZE];
+unsigned char image[SIZE][SIZE];
+unsigned char detectimage[SIZE][SIZE];
 unsigned char new_image_grid[SIZE][SIZE];
 unsigned char newimage[SIZE][SIZE];
 
@@ -78,7 +85,7 @@ int main()
         }
         else if (choice == 7)
         {
-            //detect_image_edges();
+            Detectimage();
         }
         else if (choice == 8)
         {
@@ -90,7 +97,7 @@ int main()
         }
         else if (choice == 'a')
         {
-            //mirror_image();
+            Mirrorimage();
         }
         else if (choice == 'b')
         {
@@ -370,4 +377,137 @@ void save_image(){
     cin >> new_name;
     strcat(new_name , ".bmp");
     writeGSBMP(new_name , image_grid );
+}
+void Detectimage() {
+  long  Gx=0 , Gy=0 ;
+  int x=0 ;   
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      if ((i-1>=0)and(i+1<=255)and (j-1>=0)and(j+1<=255))
+      {
+        // Gx to detect the edges in vertical
+        Gx= (image[i-1][j-1]*-1)+(image[i-1][j+1]*1)+(image[i][j-1]*-2)+(image[i][j+1]*2)+(image[i+1][j-1]*-1)+(image[i+1][j+1]*1);
+        // Gy to detect the edges in horizontal
+        Gy= (image[i-1][j-1]*-1)+(image[i-1][j+1]*-1)+(image[i-1][j]*-2)+(image[i+1][j]*2)+(image[i+1][j-1]*1)+(image[i+1][j+1]*1);
+        x = sqrtf((Gx*Gx)+(Gy*Gy));                  // x to detcet the edges in both side
+       //if to check if x>255 or not 
+        if(x>255)
+          {
+            x=255;
+          }
+          detectimage[i][j]=x;
+      }
+      else{
+          detectimage[i][j]=0;
+      }   
+    }
+    // for loop to detect the edges more
+    for(int i=0;i<SIZE;i++)
+    {
+      for(int j=0;j<SIZE;j++)
+      { 
+        if(detectimage[i][j]>127)
+        {
+          detectimage[i][j]=255;
+        }
+        if (detectimage[i][j]!=255)
+        {
+          detectimage[i][j]=0;
+        }
+        
+      }
+    }
+  }
+  // for loop to invert the image
+    for(int i=0;i<SIZE;i++)
+    {
+      for(int j=0;j<SIZE;j++)
+      {
+        detectimage[i][j]=255-detectimage[i][j];
+      }
+    }
+    // for loop to move the image to the old matrix
+    for(int i=0;i<SIZE;i++)
+    {
+      for(int j=0;j<SIZE;j++)
+      {
+        image[i][j]=detectimage[i][j];
+      }
+    }
+}
+void down_side() {
+  // for loop to mirror the lower half of the image
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        image[i][j]= image[SIZE-i][j];
+    }
+  }
+}
+void right_side()
+{
+    // for loop to mirror the right half of the image
+    for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        image[i][j]= image[i][SIZE-j];
+    }
+  }
+}
+void upper_side()
+{
+    // for loop to mirror the upper half of the image
+    for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        image[SIZE-i][j]= image[i][j];
+    }
+  }
+}
+void left_side()
+{
+    // for loop to mirror the left half of the image
+    for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        image[i][SIZE-j]= image[i][j];
+
+    }
+  }
+}
+void Mirrorimage()
+{
+  char type;
+  //while loop to take the type of mirror from the user
+  while (true)
+  {
+  cout<<"1- mirror of the left half, enter (l) "<<endl;
+  cout <<"2- mirror of the right half, enter (r) "<<endl;
+  cout <<"3- mirror of the upper half, enter (u) "<<endl;
+  cout <<"4- mirror of the down half, enter (d) "<<endl;
+  cin >> type;
+  if (type =='l')
+  {
+    left_side();
+    break;
+  }
+  if (type=='r')
+  {
+    right_side();
+    break;
+  }
+  if (type=='u')
+  {
+    upper_side();
+    break;
+  }
+  if (type=='d')
+  {
+    down_side();
+    break ;
+  }
+  // if to check the user input teh correct type or no
+  if (type !='l' and type !='r' and type !='u' and type !='d' )
+  {
+    cout <<"enter the correct choose : "<<endl;
+    continue;
+  }
+  
+}
 }
