@@ -80,7 +80,7 @@ int main()
             cin.clear();
             cin.sync();
         } while (choice < 0 || choice > 13);
-        
+
         load_image();
         if (choice == 1)
         {
@@ -420,6 +420,13 @@ void shrink_image()
 void blur_image()
 {
     char color;
+    for (int j = 1; j < 255; j++)
+    {
+        for (int i = 1; i < 255; i++)
+        {
+            image_grid[i][j] = (image_grid[i - 1][j - 1] + image_grid[i - 1][j] + image_grid[i - 1][j + 1] + image_grid[i][j - 1] + image_grid[i][j + 1] + image_grid[i + 1][j - 1] + image_grid[i + 1][j] + image_grid[i + 1][j + 1]) / 8;
+        }
+    }
     for (int j = 1; j < 255; j++)
     {
         for (int i = 1; i < 255; i++)

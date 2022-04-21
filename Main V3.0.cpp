@@ -18,17 +18,17 @@ using namespace std;
 void invert_colored();
 void rotate_colored();
 //void BWimage();
-//void merge_images();
+void merge_image();
 //void flipimageH();
 //void choose();
 //void flipimageV();
 void load_colored();
 void save_colored();
-//void darken_ligthen();
-//void darken();
-//void ligthen();
-//void shrink_image();
-//void blur_image();
+void darken_ligthen();
+void darken();
+void ligthen();
+void shrink_image();
+void blur_image();
 //void Detectimage();
 void enlarge_colored();
 //void down_side();
@@ -43,6 +43,7 @@ unsigned char image[SIZE][SIZE][RGB];
 unsigned char detectimage[SIZE][SIZE][RGB];
 unsigned char new_colored[SIZE][SIZE][RGB];
 unsigned char newimage[SIZE][SIZE][RGB];
+unsigned char new_image[SIZE][SIZE][RGB];
 unsigned char first_quarter_colored[128][128][3];
 unsigned char second_quarter_colored[128][128][3];
 unsigned char third_quarter_colored[128][128][3];
@@ -80,7 +81,7 @@ int main()
             cin.clear();
             cin.sync();
         } while (choice < 0 || choice > 13);
-        
+
         load_colored();
         if (choice == 1)
         {
@@ -94,7 +95,7 @@ int main()
 
         else if (choice == 3)
         {
-            //merge_images();
+            merge_image();
         }
 
         else if (choice == 4)
@@ -109,7 +110,7 @@ int main()
 
         else if (choice == 6)
         {
-            //darken_ligthen();
+            darken_ligthen();
         }
         else if (choice == 7)
         {
@@ -121,7 +122,7 @@ int main()
         }
         else if (choice == 9)
         {
-            //shrink_image();
+            shrink_image();
         }
         else if (choice == 10)
         {
@@ -133,11 +134,11 @@ int main()
         }
         else if (choice == 12)
         {
-            //blur_image();
+            blur_image();
         }
         else if (choice == 13)
         {
-            //save_colored();
+            save_colored();
         }
         else if (choice == 0)
         {
@@ -170,13 +171,13 @@ void shuffle_colored()
     int counter = 0;
     int rows = 0;
     int columns = 0;
-        
-    do 
+
+    do
     {
         cout << "Please Enter The Order of The New Image: ";
         cin >> order;
     } while (!is_valid_order(order));
-    
+
 
     for (int i = 0; i < 128; i++)
     {
@@ -224,7 +225,7 @@ void shuffle_colored()
 
     while (counter < 4)
     {
-        
+
         if (counter == 0)
         {
             rows = 0;
@@ -309,7 +310,7 @@ void shuffle_colored()
                 }
             }
         }
-        
+
         counter++ ;
     }
 
@@ -460,10 +461,10 @@ void rotate_colored()
     int choice;
     cout << "Do You Want Rotate by 90 or 180 or 270? ";
     cin >> choice;
-    
+
     if (choice == 90)
     {
-        for (int i =0; i < SIZE - 1; i++)           // copy from the image grid to a new grid 
+        for (int i =0; i < SIZE - 1; i++)           // copy from the image grid to a new grid
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -473,8 +474,8 @@ void rotate_colored()
                 }
             }
         }
- 
-        for (int i = 0; i < SIZE - 1; i++)         // returning the new grid to the old one 
+
+        for (int i = 0; i < SIZE - 1; i++)         // returning the new grid to the old one
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -484,7 +485,7 @@ void rotate_colored()
                 }
             }
         }
-            
+
     }
     else if (choice == 180)
     {
@@ -512,7 +513,7 @@ void rotate_colored()
             }
         }
 
-        for (int i = 0; i < SIZE - 1; i++)          
+        for (int i = 0; i < SIZE - 1; i++)
         {
             for (int j = 0; j < SIZE - 1; j++)
             {
@@ -526,6 +527,117 @@ void rotate_colored()
     }
 }
 
+void darken_ligthen()
+{
+  char choose;
+  cout<<"Do you want to (d)arken or (l)ighten?";
+  cin>>choose;
+  if (choose=='d'){
+    darken();
+  }
+  else if (choose=='l'){
+    ligthen();
+  }
+}
+void ligthen(){
+    //make the photo ligter
+    for(int m=0;m<3;m++){
+        for(int i=0;i<256;i++){
+            for(int j=0;j<256;j++){
+                colored_image[i][j][m]=(256+colored_image[i][j][m])/2;
+            }
+        }
+    }
+}
+void darken(){
+    //make the photo darker
+    for(int m=0;m<3;m++){
+        for(int i=0;i<256;i++){
+            for(int j=0;j<256;j++){
+                colored_image[i][j][m]=(colored_image[i][j][m])/2;
+            }
+        }
+    }
+}
+
+void blur_image() {
+    char color;
+    for(int m=0;m<3;m++){
+        for(int j=1;j<255;j++){
+            for(int i=1;i<255;i++){
+                colored_image[i][j][m]=(colored_image[i-1][j-1][m]+colored_image[i-1][j][m]+colored_image[i-1][j+1][m]+colored_image[i][j-1][m]+colored_image[i][j+1][m]+colored_image[i+1][j-1][m]+colored_image[i+1][j][m]+colored_image[i+1][j+1][m])/8;
+            }
+        }
+    }
+    for(int m=0;m<3;m++){
+        for(int j=1;j<255;j++){
+            for(int i=1;i<255;i++){
+                colored_image[i][j][m]=(colored_image[i-1][j-1][m]+colored_image[i-1][j][m]+colored_image[i-1][j+1][m]+colored_image[i][j-1][m]+colored_image[i][j+1][m]+colored_image[i+1][j-1][m]+colored_image[i+1][j][m]+colored_image[i+1][j+1][m])/8;
+            }
+        }
+    }
+}
+void merge_image() {
+       // Get gray scale colored_image file name of the colored_image to merge with
+    unsigned char colored_image2[SIZE][SIZE][RGB];
+    char second_colored_image[100];
+    cout << "Please enter name of image file to merge with: ";
+    cin >> second_colored_image;
+
+   // Add to it .bmp extension and load colored_image
+   strcat (second_colored_image, ".bmp");
+   readRGBBMP(second_colored_image, colored_image2);
+   //merge the two colored_images
+    for(int m=0;m<3;m++){
+       for(int i=0;i<256;i++){
+            for(int j=0;j<256;j++){
+                colored_image[i][j][m]=(colored_image[i][j][m]+colored_image2[i][j][m])/2;
+            }
+       }
+    }
+}
+
+void shrink_image() {
+    string shrink_size;
+    cout<<"Shrink to (1/2), (1/3) or (1/4)?"<<endl;
+    cin>>shrink_size;
+
+    if(shrink_size=="1/2"){
+        for(int m=0;m<3;m++){
+            for(int i=0;i<256;i+=2){
+                for(int j=0;j<256;j+=2){
+                    new_image[i/2][j/2][m]=colored_image[i][j][m];
+                }
+            }
+        }
+    }
+    else if(shrink_size=="1/3"){
+        for(int m=0;m<3;m++){
+            for(int i=0;i<256;i+=3){
+                for(int j=0;j<256;j+=3){
+                    new_image[i/3][j/3][m]=colored_image[i][j][m];
+                }
+            }
+        }
+    }
+    else{
+        for(int m=0;m<3;m++){
+            for(int i=0;i<256;i+=4){
+                for(int j=0;j<256;j+=4){
+                    new_image[i/4][j/4][m]=colored_image[i][j][m];
+                }
+            }
+        }
+    }
+    for(int m=0;m<3;m++){
+            for(int i=0;i<256;i++){
+                for(int j=0;j<256;j++){
+                    image[i][j][m]=colored_image[i][j][m];
+                }
+
+        }
+    }
+}
 
 // to validate user order used in shuffle filter using regex
 bool is_valid_order(string &order)
