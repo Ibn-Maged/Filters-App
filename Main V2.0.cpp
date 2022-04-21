@@ -3,6 +3,7 @@
 #include "bmplib.h"
 #include "bmplib.cpp"
 #include<cmath>
+#include <regex>
 
 using namespace std;
 
@@ -22,20 +23,26 @@ void ligthen();
 void shrink_image();
 void blur_image();
 void Detectimage ();
-//void enlarge_image();
+void enlarge();
 void down_side ();
 void right_side ();
 void upper_side();
 void left_side();
 void Mirrorimage();
-//void shuffle_image();
+void shuffle_image();
 
 unsigned char image_grid[SIZE][SIZE];
 unsigned char image[SIZE][SIZE];
 unsigned char detectimage[SIZE][SIZE];
 unsigned char new_image_grid[SIZE][SIZE];
 unsigned char newimage[SIZE][SIZE];
+unsigned char first_quarter[128][128];
+unsigned char second_quarter[128][128];
+unsigned char third_quarter[128][128];
+unsigned char fourth_quarter[128][128];
+unsigned char next_part[128][128];
 
+bool is_valid_order(string& order);
 
 
 int main()
@@ -89,7 +96,7 @@ int main()
         }
         else if (choice == 8)
         {
-           // enlarge_image();
+            enlarge();
         }
         else if (choice == 9)
         {
@@ -510,4 +517,233 @@ void Mirrorimage()
   }
   
 }
+}
+
+void enlarge()
+{
+    int chosen_part;
+    cout << "Which Part Do Want to Enlarge? ";
+    cin >> chosen_part;
+
+    if (chosen_part == 1)
+    {
+        for (int i = 0 , k = 0; i < SIZE; i+=2 , k++)
+        {
+            for (int j = 0 , l =0; j < SIZE ; j+=2 , l++)
+            {
+                new_image_grid[i][j] = image_grid[k][l];
+                new_image_grid[i][j + 1] = image_grid[k][l];
+                new_image_grid[i + 1][j] = image_grid[k][l];
+                new_image_grid[i + 1][j + 1] = image_grid[k][l];
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                image_grid[i][j] = new_image_grid[i][j];
+            }
+        }
+    }
+    else if (chosen_part == 2)
+    {
+        for (int i = 0 , k = 0; i < SIZE; i+=2 , k++)
+        {
+            for (int j = 0 , l =127; j < SIZE ; j+=2 , l++)
+            {
+                new_image_grid[i][j] = image_grid[k][l];
+                new_image_grid[i][j + 1] = image_grid[k][l];
+                new_image_grid[i + 1][j] = image_grid[k][l];
+                new_image_grid[i + 1][j + 1] = image_grid[k][l];
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                image_grid[i][j] = new_image_grid[i][j];
+            }
+        }
+    }
+    else if (chosen_part == 3)
+    {
+        for (int i = 0 , k = 127; i < SIZE; i+=2 , k++)
+        {
+            for (int j = 0 , l =0; j < SIZE ; j+=2 , l++)
+            {
+                new_image_grid[i][j] = image_grid[k][l];
+                new_image_grid[i][j + 1] = image_grid[k][l];
+                new_image_grid[i + 1][j] = image_grid[k][l];
+                new_image_grid[i + 1][j + 1] = image_grid[k][l];
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                image_grid[i][j] = new_image_grid[i][j];
+            }
+        }
+    }
+    else if (chosen_part == 4)
+    {
+        for (int i = 0 , k = 127; i < SIZE; i+=2 , k++)
+        {
+            for (int j = 0 , l =127; j < SIZE ; j+=2 , l++)
+            {
+                new_image_grid[i][j] = image_grid[k][l];
+                new_image_grid[i][j + 1] = image_grid[k][l];
+                new_image_grid[i + 1][j] = image_grid[k][l];
+                new_image_grid[i + 1][j + 1] = image_grid[k][l];
+            }
+        }
+
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                image_grid[i][j] = new_image_grid[i][j];
+            }
+        }
+    }
+}
+
+void shuffle_image()
+{
+    string order;
+    int counter = 0;
+    int rows = 0;
+    int columns = 0;
+        
+    do 
+    {
+        cout << "Please Enter The Order of The New Image: ";
+        cin >> order;
+    } while (!is_valid_order(order));
+    
+
+    for (int i = 0; i < 128; i++)
+    {
+        for (int j = 0; j < 128; j++)
+        {
+            first_quarter[i][j] = image_grid[i][j];
+        }
+    }
+
+    for (int i = 0; i < 128; i++)
+    {
+        for (int j = 0; j < 128; j++)
+        {
+            second_quarter[i][j] = image_grid[i][j + 127];
+        }
+    }
+
+    for (int i = 0; i < 128; i++)
+    {
+        for (int j = 0; j < 128; j++)
+        {
+            third_quarter[i][j] = image_grid[i + 127][j];
+        }
+    }
+
+    for (int i = 0; i < 128; i++)
+    {
+        for (int j = 0; j < 128; j++)
+        {
+            fourth_quarter[i][j] = image_grid[i + 127][j + 127];
+        }
+    }
+
+    while (counter < 4)
+    {
+        
+        if (counter == 0)
+        {
+            rows = 0;
+            counter = 0;
+        }
+        else if (counter == 1)
+        {
+            rows = 127;
+            columns = 0;
+        }
+        else if (counter == 2)
+        {
+            rows = 0;
+            columns = 127;
+        }
+        else if (counter == 3)
+        {
+            rows = 127;
+            columns = 127;
+        }
+
+        if (order[counter] == '1')
+        {
+            for (int i = 0; i < 128; i++)
+            {
+                for (int j = 0; j < 128 ; j++)
+                {
+                    next_part[i][j] = first_quarter[i][j];
+                }
+            }
+        }
+        else if (order[counter] == '2')
+        {
+            for (int i = 0; i < 128; i++)
+            {
+                for (int j = 0; j < 128 ; j++)
+                {
+                    next_part[i][j] = second_quarter[i][j];
+                }
+            }
+        }
+        else if (order[counter] == '3')
+        {
+            for (int i = 0; i < 128; i++)
+            {
+                for (int j = 0; j < 128 ; j++)
+                {
+                    next_part[i][j] = third_quarter[i][j];
+                }
+            }
+        }
+        else if (order[counter] == '4')
+        {
+            for (int i = 0; i < 128; i++)
+            {
+                for (int j = 0; j < 128 ; j++)
+                {
+                    next_part[i][j] = fourth_quarter[i][j];
+                }
+            }
+        }
+
+        for (int i = 0; i < 128 ; i++)
+        {
+            for (int j = 0; j < 128 ; j++)
+            {
+                new_image_grid[i+columns][j+rows] = next_part[i][j];
+            }
+        }
+        
+        counter++ ;
+    }
+
+    for (int i = 0; i < SIZE ; i++)
+    {
+        for (int j = 0; j < SIZE ; j++)
+        {
+            image_grid[i][j] = new_image_grid[i][j];
+        }
+    }
+}
+
+bool is_valid_order(string& order)
+{
+    regex valid_order("[1-4][1-4][1-4][1-4]");
+    return regex_match(order , valid_order);
 }
