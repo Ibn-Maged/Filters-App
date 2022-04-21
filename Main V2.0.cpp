@@ -1,3 +1,11 @@
+// FCAI - Programming 1 - 2022 - Assignment 3
+// Program Name: Simple Photo Editor
+// Last Modification Date: 21/4/2022
+// Author1 and ID: Ahmad Saad       20210020
+// Author2 and ID: Hassan Magdi     20210126
+// Author3 and ID: Mohamed Maged    20210352
+// TA: Hagar Ali
+
 #include <iostream>
 #include <cstring>
 #include "bmplib.h"
@@ -45,31 +53,35 @@ bool is_valid_order(string &order);
 
 int main()
 {
-    while (true)
+    cout << "Hello Dear User!\n";
+    cout << "Please Choose From the Menu Below: \n";
+    cout << "1- Black and White \n"
+         << "2- invert \n"
+         << "3- merge\n"
+         << "4- flip\n"
+         << "5- rotate \n"
+         << "6- Darken and Lighten \n"
+         << "7- Detect Image Edges \n"
+         << "8- Enlarge Image \n"
+         << "9- Shrink Image \n"
+         << "10- Mirror Image \n"
+         << "11- Shuffle Image \n"
+         << "12- Blur Image \n"
+         << "13- Save \n"
+         << "0- Exit " << endl;
+    // the main loop
+     while (true)
     {
-        load_image();
         int choice;
-        cout << "Hello Dear User!\n"
-             << "what Do You Need Today?\n";
+        cout << "Please Choose from the Menu above: ";
         do
         {
-            cout << "1- Black and White \n"
-                 << "2- invert \n"
-                 << "3- merge\n"
-                 << "4- flip\n"
-                 << "5-rotate \n"
-                 << "6- Darken and Lighten \n"
-                 << "7- Detect Image Edges \n"
-                 << "8- Enlarge Image \n"
-                 << "9- Shrink Image \n"
-                 << "a- Mirror Image \n"
-                 << "b- Shuffle Image \n"
-                 << "c- Blur Image" << endl;
             cin >> choice;
             cin.clear();
             cin.sync();
-        } while (choice > 9 || choice < 1);
-
+        } while (choice < 0 || choice > 13);
+        
+        load_image();
         if (choice == 1)
         {
             BWimage();
@@ -111,23 +123,28 @@ int main()
         {
             shrink_image();
         }
-        else if (choice == 'a')
+        else if (choice == 10)
         {
             Mirrorimage();
         }
-        else if (choice == 'b')
+        else if (choice == 11)
         {
             shuffle_image();
         }
-        else if (choice == 'c')
+        else if (choice == 12)
         {
             blur_image();
         }
-
-        save_image();
+        else if (choice == 13)
+        {
+            save_image();
+        }
+        else if (choice == 0)
+        {
+            break;
+        }
     }
 }
-
 void invert()
 {
     for (int i = 0; i < SIZE; i++)
@@ -575,6 +592,7 @@ void Mirrorimage()
 
 void enlarge()
 {
+    // to enlarge repeat the pixel 4 times in a square shape
     int chosen_part;
     cout << "Which Part Do Want to Enlarge? ";
     cin >> chosen_part;
@@ -585,6 +603,7 @@ void enlarge()
         {
             for (int j = 0, l = 0; j < SIZE; j += 2, l++)
             {
+                // copying the target pixel 4 times in a new matrix
                 new_image_grid[i][j] = image_grid[k][l];
                 new_image_grid[i][j + 1] = image_grid[k][l];
                 new_image_grid[i + 1][j] = image_grid[k][l];
@@ -596,6 +615,7 @@ void enlarge()
         {
             for (int j = 0; j < SIZE; j++)
             {
+                // return the image to the original matrix
                 image_grid[i][j] = new_image_grid[i][j];
             }
         }
@@ -606,6 +626,7 @@ void enlarge()
         {
             for (int j = 0, l = 127; j < SIZE; j += 2, l++)
             {
+                // copying the target pixel 4 times in a new matrix
                 new_image_grid[i][j] = image_grid[k][l];
                 new_image_grid[i][j + 1] = image_grid[k][l];
                 new_image_grid[i + 1][j] = image_grid[k][l];
@@ -617,6 +638,7 @@ void enlarge()
         {
             for (int j = 0; j < SIZE; j++)
             {
+                // return the image to the original matrix
                 image_grid[i][j] = new_image_grid[i][j];
             }
         }
@@ -627,6 +649,7 @@ void enlarge()
         {
             for (int j = 0, l = 0; j < SIZE; j += 2, l++)
             {
+                // copying the target pixel 4 times in a new matrix
                 new_image_grid[i][j] = image_grid[k][l];
                 new_image_grid[i][j + 1] = image_grid[k][l];
                 new_image_grid[i + 1][j] = image_grid[k][l];
@@ -638,6 +661,7 @@ void enlarge()
         {
             for (int j = 0; j < SIZE; j++)
             {
+                // return the image to the original matrix
                 image_grid[i][j] = new_image_grid[i][j];
             }
         }
@@ -648,6 +672,7 @@ void enlarge()
         {
             for (int j = 0, l = 127; j < SIZE; j += 2, l++)
             {
+                // copying the target pixel 4 times in a new matrix
                 new_image_grid[i][j] = image_grid[k][l];
                 new_image_grid[i][j + 1] = image_grid[k][l];
                 new_image_grid[i + 1][j] = image_grid[k][l];
@@ -659,6 +684,7 @@ void enlarge()
         {
             for (int j = 0; j < SIZE; j++)
             {
+                // return the image to the original matrix
                 image_grid[i][j] = new_image_grid[i][j];
             }
         }
@@ -672,6 +698,7 @@ void shuffle_image()
     int rows = 0;
     int columns = 0;
 
+    // do while loop to validate user input using regex
     do
     {
         cout << "Please Enter The Order of The New Image: ";
@@ -682,6 +709,7 @@ void shuffle_image()
     {
         for (int j = 0; j < 128; j++)
         {
+            // to  copy the upper left quarter of the image in a new matrix
             first_quarter[i][j] = image_grid[i][j];
         }
     }
@@ -690,6 +718,7 @@ void shuffle_image()
     {
         for (int j = 0; j < 128; j++)
         {
+            // to  copy the upper right quarter of the image in a new matrix
             second_quarter[i][j] = image_grid[i][j + 127];
         }
     }
@@ -698,6 +727,7 @@ void shuffle_image()
     {
         for (int j = 0; j < 128; j++)
         {
+            // to  copy the lower left quarter of the image in a new matrix
             third_quarter[i][j] = image_grid[i + 127][j];
         }
     }
@@ -706,17 +736,18 @@ void shuffle_image()
     {
         for (int j = 0; j < 128; j++)
         {
+            // to  copy the lower right quarter of the image in a new matrix
             fourth_quarter[i][j] = image_grid[i + 127][j + 127];
         }
     }
 
     while (counter < 4)
     {
-
+        // rows and columns used in accessing the 4 image parts in the right order
         if (counter == 0)
         {
             rows = 0;
-            counter = 0;
+            columns = 0;
         }
         else if (counter == 1)
         {
@@ -733,7 +764,7 @@ void shuffle_image()
             rows = 127;
             columns = 127;
         }
-
+        // copying the chosen quarter in the matrix used in moving the image
         if (order[counter] == '1')
         {
             for (int i = 0; i < 128; i++)
@@ -774,7 +805,7 @@ void shuffle_image()
                 }
             }
         }
-
+        // copying selected quarter in the image matrix
         for (int i = 0; i < 128; i++)
         {
             for (int j = 0; j < 128; j++)
@@ -785,7 +816,7 @@ void shuffle_image()
 
         counter++;
     }
-
+    // return the image to the original matrix
     for (int i = 0; i < SIZE; i++)
     {
         for (int j = 0; j < SIZE; j++)
@@ -795,6 +826,7 @@ void shuffle_image()
     }
 }
 
+// to validate user order used in shuffle filter using regex
 bool is_valid_order(string &order)
 {
     regex valid_order("[1-4][1-4][1-4][1-4]");
