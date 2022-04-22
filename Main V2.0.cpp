@@ -70,76 +70,102 @@ int main()
          << "13- Save \n"
          << "0- Exit " << endl;
     // the main loop
-     while (true)
+    while (true)
     {
-        int choice;
-        cout << "Please Choose from the Menu above: ";
-        do
+        load_image();
+        char load_choice;
+        while (true)
         {
-            cin >> choice;
+            int choice;
+            do
+            {
+                cout << "Please Choose from the Menu above: ";
+                cin >> choice;
+                cin.clear();
+                cin.sync();
+            } while (choice < 0 || choice > 13);
+
+            if (choice == 1)
+            {
+                BWimage();
+            }
+
+            else if (choice == 2)
+            {
+                invert();
+            }
+
+            else if (choice == 3)
+            {
+                merge_images();
+            }
+
+            else if (choice == 4)
+            {
+                choose();
+            }
+
+            else if (choice == 5)
+            {
+                rotate();
+            }
+
+            else if (choice == 6)
+            {
+                darken_ligthen();
+            }
+            else if (choice == 7)
+            {
+                Detectimage();
+            }
+            else if (choice == 8)
+            {
+                enlarge();
+            }
+            else if (choice == 9)
+            {
+                shrink_image();
+            }
+            else if (choice == 10)
+            {
+                Mirrorimage();
+            }
+            else if (choice == 11)
+            {
+                shuffle_image();
+            }
+            else if (choice == 12)
+            {
+                blur_image();
+            }
+            else if (choice == 13)
+            {
+                save_image();
+            }
+            else if (choice == 0)
+            {
+                break;
+            }
+
+            cout << "Done! \n\n";
+        }
+        while (true)
+        {
+            cout << "Press L to Load Another Image or Press Q to quit: ";
+            cin >> load_choice;
+            tolower(load_choice);
             cin.clear();
             cin.sync();
-        } while (choice < 0 || choice > 13);
-
-        load_image();
-        if (choice == 1)
-        {
-            BWimage();
+            if (load_choice == 'q')
+            {
+                break;
+            }
+            else if (load_choice == 'l')
+            {
+                break;
+            }
         }
-
-        else if (choice == 2)
-        {
-            invert();
-        }
-
-        else if (choice == 3)
-        {
-            merge_images();
-        }
-
-        else if (choice == 4)
-        {
-            choose();
-        }
-
-        else if (choice == 5)
-        {
-            rotate();
-        }
-
-        else if (choice == 6)
-        {
-            darken_ligthen();
-        }
-        else if (choice == 7)
-        {
-            Detectimage();
-        }
-        else if (choice == 8)
-        {
-            enlarge();
-        }
-        else if (choice == 9)
-        {
-            shrink_image();
-        }
-        else if (choice == 10)
-        {
-            Mirrorimage();
-        }
-        else if (choice == 11)
-        {
-            shuffle_image();
-        }
-        else if (choice == 12)
-        {
-            blur_image();
-        }
-        else if (choice == 13)
-        {
-            save_image();
-        }
-        else if (choice == 0)
+        if (load_choice == 'q')
         {
             break;
         }
@@ -336,7 +362,6 @@ void merge_images()
 void darken_ligthen()
 {
     char choose;
-    load_image();
     cout << "Do you want to (d)arken or (l)ighten?";
     cin >> choose;
     if (choose == 'd')
@@ -347,7 +372,6 @@ void darken_ligthen()
     {
         ligthen();
     }
-    save_image();
 }
 void ligthen()
 {
