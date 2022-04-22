@@ -17,11 +17,11 @@ using namespace std;
 
 void invert_colored();
 void rotate_colored();
-// void BWimage();
+void BWimageRGB ();
 void merge_image();
-// void flipimageH();
-// void choose();
-// void flipimageV();
+void flipimageH ();
+void flipimage();
+void flipimageV ();
 void load_colored();
 void save_colored();
 void darken_ligthen();
@@ -29,13 +29,13 @@ void darken();
 void ligthen();
 void shrink_image();
 void blur_image();
-// void Detectimage();
+void DetectimageRGB ();
 void enlarge_colored();
-// void down_side();
-// void right_side();
-// void upper_side();
-// void left_side();
-// void Mirrorimage();
+void down_side ();
+void right_side ();
+void upper_side();
+void left_side();
+void MirrorB();
 void shuffle_colored();
 
 unsigned char colored_image[SIZE][SIZE][RGB];
@@ -89,8 +89,7 @@ int main()
 
             if (choice == 1)
             {
-                // BWimage();
-            }
+                BWimageRGB ();            }
 
             else if (choice == 2)
             {
@@ -104,7 +103,7 @@ int main()
 
             else if (choice == 4)
             {
-                // choose();
+                flipimage();
             }
 
             else if (choice == 5)
@@ -118,7 +117,7 @@ int main()
             }
             else if (choice == 7)
             {
-                // Detectimage();
+                DetectimageRGB ();
             }
             else if (choice == 8)
             {
@@ -130,7 +129,7 @@ int main()
             }
             else if (choice == 10)
             {
-                // Mirrorimage();
+                MirrorB();
             }
             else if (choice == 11)
             {
@@ -704,3 +703,290 @@ bool is_valid_order(string &order)
     regex valid_order("[1-4][1-4][1-4][1-4]");
     return regex_match(order, valid_order);
 }
+void BWimageRGB() {
+  long average = 0;
+// for loop to calculate teh average 
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        for (int k =0 ; k<RGB ;k++)
+        {
+        average += image[i][j][k];
+        }
+    }
+  }
+  average /= (SIZE*SIZE*RGB);
+  // for loop to convert teh image to B and W image
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for (int k =0 ; k<RGB ;k=k+3)
+      {
+        if (image[i][j][k] + image[i][j][k+1] + image[i][j][k+2] >= 382)
+        {
+          // 3 statements for R , G , B 
+          image[i][j][k] = 255;
+          image[i][j][k+1] = 255;
+          image[i][j][k+2] = 255;
+        }
+        else{
+          image[i][j][k] = 0;
+          image[i][j][k+1] = 0;
+          image[i][j][k+2] = 0;
+        }
+        }
+    }
+  }
+}
+void flipimageH() {
+  // for loop to flip horizpntal
+    for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for(int k =0;k<3 ; k++)
+        newimage[i][j][k]= image[i][j][k];
+    }
+    }
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for (int k = 0 ; k <RGB ; k++)
+      {
+        image[i][j][k] = image[SIZE -i][j][k];    
+      }
+    }
+  }
+// for loop to store the new matrix in old matrix
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for (int k = 0 ; k <RGB ; k++)
+      {
+        image[SIZE-i][j][k]=newimage[i][j][k];
+      }
+    }
+    }
+}
+void flipimageV()
+{
+  // for loop to flip vertically
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for (int k = 0 ; k <RGB ; k++)
+      {
+        newimage[i][j][k]= image[i][j][k]; 
+      }
+    }
+    }
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for (int k = 0 ; k <RGB ; k++)
+      {
+        image[i][j][k] = image[i][SIZE-j][k];     
+      }
+    }
+  }
+  // for loop to store the new matrix in old matrix
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for (int k = 0 ; k <RGB ; k++)
+      {
+        image[i][SIZE-j][k]=newimage[i][j][k]; 
+      }
+    }
+    }
+
+}
+void flipimage()
+{
+  char type;
+ // while true to check teh correct input
+  while (true)
+  {
+  cout<<"1- flip image horizontally, enter (h) "<<endl;
+  cout <<"2- flip image vertically , enter (v)"<<endl;
+  cin >> type;
+  if (type =='h')
+  {
+  flipimageH();
+  break;
+  }
+  if (type=='v')
+  {
+    flipimageV();
+    break;
+  }
+  if (type!='h' or type !='v')
+  {
+  cout<<"entre (v) or (h) only"<<endl;
+  continue;
+  }
+  }
+}
+
+void DetectimageRGB() {
+    long avarage = 0;
+    int x=0;
+    // for loop to convert the image to black and white
+    for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        for (int k =0 ; k<RGB ;k++)
+        {
+          detectimage[i][j][k]=255;
+        }
+    }
+     }
+     for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        for (int k =0 ; k<RGB ;k++)
+        {
+        avarage += image[i][j][k];
+        }
+    }
+  }
+  avarage /= (SIZE*SIZE*RGB);
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        for (int k =0 ; k<RGB ;k=k+3)
+        {
+        if (image[i][j][k] + image[i][j][k+1] + image[i][j][k+2] >= 382)
+        {
+          image[i][j][k] = 255;
+          image[i][j][k+1] = 255;
+          image[i][j][k+2] = 255;
+        }
+        else{
+          image[i][j][k] = 0;
+          image[i][j][k+1] = 0;
+          image[i][j][k+2] = 0;
+        }
+        }
+    }
+  }
+    // for loop to detcet the image
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      if(x==1)
+        {
+          detectimage[i][j][0]=255;
+          if (image[i][j+1][0]==255)
+          {
+            x=0;
+          }
+         
+        }
+
+        if(x==0)
+        {
+        if (image[i][j][0]==0)
+        {
+          detectimage[i][j][0]=0;
+          detectimage[i][j][1]=0;
+          detectimage[i][j][2]=0;
+           x=1;
+          if(image[i-1][j][0]==255 or image[i+1][j][0]==255 or image[i-1][j+1][0]==255 or image[i-1][j-1][0]==255 or image[i+1][j+1][0]==255 or image[i+1][j-1][0]==255)
+          {
+          detectimage[i][j][0]=0;
+          detectimage[i][j][1]=0;
+          detectimage[i][j][2]=0;
+          x=0;
+          }
+        }
+        }
+    }
+
+  }
+   for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+      for (int k=0; k<RGB;k++)
+      image[i][j][k]=detectimage[i][j][k];
+    }
+  }
+}
+void down_side() {
+  // for loop to mirror the down side
+  for (int i = 0; i < SIZE; i++) {
+    for (int j = 0; j< SIZE; j++) {
+        for (int k=0 ; k<RGB;k++)
+        {
+        image[i][j][k]= image[SIZE-i][j][k];
+        }
+
+    }
+  }
+}
+void right_side()
+{
+  // for loop to mirror the right side
+  for (int i = 0; i < SIZE; i++) {
+  for (int j = 0; j< SIZE; j++) {
+      for (int k=0 ; k<RGB;k++)
+      {
+        image[i][j][k]= image[i][SIZE-j][k];
+      }
+    }
+  }
+}
+void upper_side()
+{
+  // for loop to mirror the upper side
+  for (int i = 0; i < SIZE; i++) {
+  for (int j = 0; j< SIZE; j++) {
+      for (int k=0 ; k<RGB;k++)
+      {
+        image[SIZE-i][j][k]= image[i][j][k];
+      }
+  }
+  }
+}
+void left_side()
+{
+  // for loop to mirror the left side
+  for (int i = 0; i < SIZE; i++) {
+  for (int j = 0; j< SIZE; j++) {
+      for (int k=0 ; k<RGB;k++)
+      {
+        image[i][SIZE-j][k]= image[i][j][k];
+      }
+    }
+  }
+}
+void MirrorB()
+{
+  char type;
+  //while loop to take the type of mirror from the user
+  while (true)
+  {
+  cout<<"1- mirror of the left half, enter (l) "<<endl;
+  cout <<"2- mirror of the right half, enter (r) "<<endl;
+  cout <<"3- mirror of the upper half, enter (u) "<<endl;
+  cout <<"4- mirror of the down half, enter (d) "<<endl;
+  cin >> type;
+  if (type =='l')
+  {
+    left_side();
+    break;
+  }
+  if (type=='r')
+  {
+    right_side();
+    break;
+  }
+  if (type=='u')
+  {
+    upper_side();
+    break;
+  }
+  if (type=='d')
+  {
+    down_side();
+    break ;
+  }
+  // if to check the user input teh correct type or no
+  if (type !='l' and type !='r' and type !='u' and type !='d' )
+  {
+    cout <<"enter the correct choose : "<<endl;
+    continue;
+  }
+  
+}
+
+}
+
+
+
