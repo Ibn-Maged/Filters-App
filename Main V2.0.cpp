@@ -1,5 +1,5 @@
 // FCAI - Programming 1 - 2022 - Assignment 3
-// Program Name: Simple Photo Editor
+// Program Name: Simple Photo Editor for grayscale images
 // Last Modification Date: 21/4/2022
 // Author1 and ID: Ahmad Saad       20210020
 // Author2 and ID: Hassan Magdi     20210126
@@ -39,7 +39,6 @@ void Mirrorimage();
 void shuffle_image();
 
 unsigned char image_grid[SIZE][SIZE];
-unsigned char image[SIZE][SIZE];
 unsigned char detectimage[SIZE][SIZE];
 unsigned char new_image_grid[SIZE][SIZE];
 unsigned char newimage[SIZE][SIZE];
@@ -317,8 +316,8 @@ void choose()
 
     while (true)
     {
-        cout << "1- flip image horizontally " << endl;
-        cout << "2- flip image vertically " << endl;
+        cout << "1- flip image vertically " << endl;
+        cout << "2- flip image horizontally " << endl;
         cin >> type;
         if (type == 1)
         {
@@ -488,9 +487,9 @@ void Detectimage()
             if ((i - 1 >= 0) and (i + 1 <= 255) and (j - 1 >= 0) and (j + 1 <= 255))
             {
                 // Gx to detect the edges in vertical
-                Gx = (image[i - 1][j - 1] * -1) + (image[i - 1][j + 1] * 1) + (image[i][j - 1] * -2) + (image[i][j + 1] * 2) + (image[i + 1][j - 1] * -1) + (image[i + 1][j + 1] * 1);
+                Gx = (image_grid[i - 1][j - 1] * -1) + (image_grid[i - 1][j + 1] * 1) + (image_grid[i][j - 1] * -2) + (image_grid[i][j + 1] * 2) + (image_grid[i + 1][j - 1] * -1) + (image_grid[i + 1][j + 1] * 1);
                 // Gy to detect the edges in horizontal
-                Gy = (image[i - 1][j - 1] * -1) + (image[i - 1][j + 1] * -1) + (image[i - 1][j] * -2) + (image[i + 1][j] * 2) + (image[i + 1][j - 1] * 1) + (image[i + 1][j + 1] * 1);
+                Gy = (image_grid[i - 1][j - 1] * -1) + (image_grid[i - 1][j + 1] * -1) + (image_grid[i - 1][j] * -2) + (image_grid[i + 1][j] * 2) + (image_grid[i + 1][j - 1] * 1) + (image_grid[i + 1][j + 1] * 1);
                 x = sqrtf((Gx * Gx) + (Gy * Gy)); // x to detcet the edges in both side
                                                   // if to check if x>255 or not
                 if (x > 255)
@@ -533,7 +532,7 @@ void Detectimage()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            image[i][j] = detectimage[i][j];
+            image_grid[i][j] = detectimage[i][j];
         }
     }
 }
@@ -544,7 +543,7 @@ void down_side()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            image[i][j] = image[SIZE - i][j];
+            image_grid[i][j] = image_grid[SIZE - i][j];
         }
     }
 }
@@ -555,7 +554,7 @@ void right_side()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            image[i][j] = image[i][SIZE - j];
+            image_grid[i][j] = image_grid[i][SIZE - j];
         }
     }
 }
@@ -566,7 +565,7 @@ void upper_side()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            image[SIZE - i][j] = image[i][j];
+            image_grid[SIZE - i][j] = image_grid[i][j];
         }
     }
 }
@@ -577,7 +576,7 @@ void left_side()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            image[i][SIZE - j] = image[i][j];
+            image_grid[i][SIZE - j] = image_grid[i][j];
         }
     }
 }
